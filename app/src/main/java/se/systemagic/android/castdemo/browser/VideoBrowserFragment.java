@@ -6,9 +6,11 @@ package se.systemagic.android.castdemo.browser;
 
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Intent;
 import android.content.Loader;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,10 +24,12 @@ import android.widget.ImageButton;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
 import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
+import com.google.android.libraries.cast.companionlibrary.utils.Utils;
 
 import java.util.List;
 
 import se.systemagic.android.castdemo.R;
+import se.systemagic.android.castdemo.mediaplayer.LocalPlayerActivity;
 
 public class VideoBrowserFragment extends Fragment implements VideoListAdapter.ItemClickListener, LoaderManager.LoaderCallbacks<List<MediaInfo>> {
 
@@ -98,10 +102,10 @@ public class VideoBrowserFragment extends Fragment implements VideoListAdapter.I
             ActivityOptionsCompat options = ActivityOptionsCompat
                     .makeSceneTransitionAnimation(getActivity(), imagePair);
 
-            /*Intent intent = new Intent(getActivity(), LocalPlayerActivity.class);
+            Intent intent = new Intent(getActivity(), LocalPlayerActivity.class);
             intent.putExtra("media", Utils.mediaInfoToBundle(item));
             intent.putExtra("shouldStart", false);
-            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());*/
+            ActivityCompat.startActivity(getActivity(), intent, options.toBundle());
         }
     }
 

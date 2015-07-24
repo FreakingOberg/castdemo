@@ -6,18 +6,13 @@ import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCa
 import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.android.libraries.cast.companionlibrary.widgets.MiniController;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.MediaRouteButton;
 import android.support.v7.media.MediaRouter;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 public class VideoBrowserActivity extends AppCompatActivity {
 
@@ -33,7 +28,7 @@ public class VideoBrowserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         VideoCastManager.checkGooglePlayServices(this);
-        setContentView(R.layout.activity_browse_video);
+        setContentView(R.layout.video_browser);
 
         mCastManager = VideoCastManager.getInstance();
 
@@ -94,13 +89,13 @@ public class VideoBrowserActivity extends AppCompatActivity {
             }
         };
 
-        //setupActionBar();
+        setupActionBar();
         mCastManager.reconnectSessionIfPossible();
     }
 
     private void setupActionBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        //mToolbar.setLogo(R.drawable.actionbar_logo_castvideos);
+        //mToolbar.setLogo(R.drawable.action);
         mToolbar.setTitle(R.string.app_name);
         setSupportActionBar(mToolbar);
     }
@@ -108,7 +103,7 @@ public class VideoBrowserActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_browse_video, menu);
+        getMenuInflater().inflate(R.menu.browse, menu);
 
         mediaRouteMenuItem = mCastManager.addMediaRouterButton(menu, R.id.media_route_menu_item);
 

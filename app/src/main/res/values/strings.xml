@@ -5,4 +5,18 @@
     <string name="media_route_menu_title">Cast to</string>
     <string name="no_video_found">No movies found</string>
     <string name="transition_image">transition-image</string>
+    <string name="video_error_media_load_timeout">Timeout loading video</string>
+    <string name="video_error_server_unaccessible">Video is unaccessible</string>
+    <string name="video_error_unknown_error">Unknown error loading video</string>
+    <string name="connection_temp_lost">Connection temporarily lost</string>
+    <string name="connection_recovered">Connection recovered</string>
+
+    <string name="error">Error</string>
+    <string name="ok">Ok</string>
+    <string name="oops">Oops</string>
+    <string name="connection_lost_retry">Connection lost. Retrying</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="failed_to_perform_action">Failed to perform action</string>
+
+
 </resources>
