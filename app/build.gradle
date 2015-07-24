@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     releaseCompile project(path: ':CastCompanionLibrary', configuration: 'release')
     debugCompile project(path: ':CastCompanionLibrary', configuration: 'debug')
+    compile 'com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.6.1'
 }

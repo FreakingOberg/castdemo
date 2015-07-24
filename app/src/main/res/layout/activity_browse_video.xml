@@ -9,6 +9,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".VideoBrowserActivity">
 
+    <fragment
+        android:id="@+id/browse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/miniController1"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="-5dp"
+        class="se.systemagic.android.castdemo.browser.VideoBrowserFragment" />
+
     <com.google.android.libraries.cast.companionlibrary.widgets.MiniController
         android:id="@+id/miniController1"
         android:layout_width="fill_parent"
