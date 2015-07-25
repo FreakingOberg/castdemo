@@ -474,6 +474,7 @@ public class LocalPlayerActivity extends AppCompatActivity {
                     mDisplaySize.y + getSupportActionBar().getHeight());
             lp.addRule(RelativeLayout.CENTER_IN_PARENT);
             mVideoView.setLayoutParams(lp);
+            Log.d(TAG, "updateMetadata: mDisplaySize.x=" + mDisplaySize.x + " mDisplaySize.y=" + mDisplaySize.y + " getSupportActionBar().getHeight()" + getSupportActionBar().getHeight());
             mVideoView.invalidate();
         } else {
             MediaMetadata mm = mSelectedMedia.getMetadata();
@@ -489,8 +490,9 @@ public class LocalPlayerActivity extends AppCompatActivity {
                     RelativeLayout.LayoutParams(mDisplaySize.x,
                     (int) (mDisplaySize.x * mAspectRatio));
             lp.addRule(RelativeLayout.BELOW, R.id.toolbar);
-            lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+            //lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             mVideoView.setLayoutParams(lp);
+            Log.d(TAG, "updateMetadata: mDisplaySize.x=" + mDisplaySize.x + " mDisplaySize.y=" + mDisplaySize.y + " getSupportActionBar().getHeight()" + getSupportActionBar().getHeight());
             mVideoView.invalidate();
         }
     }
@@ -596,12 +598,12 @@ public class LocalPlayerActivity extends AppCompatActivity {
         if (show) {
             getSupportActionBar().show();
             mControllers.setVisibility(View.VISIBLE);
-        } /*else {
+        } else {
             if (!Utils.isOrientationPortrait(this)) {
                 getSupportActionBar().hide();
             }
             mControllers.setVisibility(View.INVISIBLE);
-        }*/
+        }
     }
 
     private void stopControllersTimer() {

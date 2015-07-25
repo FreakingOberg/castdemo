@@ -66,7 +66,7 @@ public final class VideoProvider {
             e.printStackTrace();
         }
         mMediaInfoList.add(new MediaInfo.Builder(
-                "http://srv57.clipconverter.cc/download/ntjSsH184J2wZHBxl5qWanFi5KWmqW5v4pSXa3BnoGpmam%2B0qc%2FMqHyf1qiZpa2d2A%3D%3D/The%20Grand%20Tournament%20Trailer.mp4")
+                "http://srv60.clipconverter.cc/download/uZbYn4Gp4n%2BwZHBxl5qWanFi5KWmqW9o4pSXa3Bom2tpY2q0qc%2FMqHyf1qiZpa2d2A%3D%3D/The%20Grand%20Tournament%20Trailer.mp4")
                 .setContentType("video/mp4")
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setStreamDuration(53 * 1000)
