@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -37,6 +38,15 @@ import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
 import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
 import com.google.android.libraries.cast.companionlibrary.widgets.MiniController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.MalformedInputException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -334,6 +344,8 @@ public class LocalPlayerActivity extends AppCompatActivity {
         }
     }
 
+
+
     private void play(int position) {
         startControllersTimer();
         switch (mLocation) {
@@ -423,6 +435,8 @@ public class LocalPlayerActivity extends AppCompatActivity {
         }
         updatePlayButton(mPlaybackState);
     }
+
+
 
     private void updateSeekbar(int position, int duration) {
         mSeekbar.setProgress(position);

@@ -13,69 +13,124 @@ import com.google.android.gms.cast.MediaTrack;
 import com.google.android.gms.common.images.WebImage;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class VideoProvider {
 
+    private static final String TAG = "VideoProvider";
+
     public static final String KEY_DESCRIPTION = "description";
+
 
     private VideoProvider() {
 
     }
 
-    public static List<MediaInfo> fake_load_data () {
+    public static List<MediaInfo> load_data () {
         List<MediaInfo> mMediaInfoList = new ArrayList<MediaInfo>();
+        mMediaInfoList.add(createMediaInfoForStreamer("lirik", "Lirik", "http://streamernews.tv/wp-content/uploads/2015/03/liriksubhotlinemarch14_2015_.jpg", "http://streamernews.tv/wp-content/uploads/2015/03/liriksubhotlinemarch14_2015_.jpg"));
+        mMediaInfoList.add(createMediaInfoForStreamer("onenationofgamers", "Trump", "http://cdn0.dailydot.com/uploaded/images/original/2014/12/16/10600470_1494067640864563_749847439709905759_n.jpg", "http://cdn0.dailydot.com/uploaded/images/original/2014/12/16/10600470_1494067640864563_749847439709905759_n.jpg"));
+        return mMediaInfoList;
+    }
+
+    private static MediaInfo createMediaInfoForStreamer(String name, String userName, String img1, String img2) {
         MediaMetadata mMediaMetadata = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
-        mMediaMetadata.putString(MediaMetadata.KEY_TITLE, "Big Buck Bunny");
-        mMediaMetadata.putString(MediaMetadata.KEY_SUBTITLE, "Blender Foundation");
-        mMediaMetadata.addImage(new WebImage(Uri.parse("https://peach.blender.org/wp-content/uploads/bbb-splash.thumbnail.png")));
-        mMediaMetadata.addImage(new WebImage(Uri.parse("https://upload.wikimedia.org/wikipedia/commons/c/c5/Big_buck_bunny_poster_big.jpg")));
+        mMediaMetadata.putString(MediaMetadata.KEY_TITLE, userName);
+        mMediaMetadata.putString(MediaMetadata.KEY_SUBTITLE, "Twitch");
+        mMediaMetadata.addImage(new WebImage(Uri.parse(img1)));
+        mMediaMetadata.addImage(new WebImage(Uri.parse(img2)));
         JSONObject jsonObj = null;
         try {
             jsonObj = new JSONObject();
-            jsonObj.put(KEY_DESCRIPTION, "'Big' Buck wakes up in his rabbit hole, only to be pestered by three critters, Gimera, Frank and Rinky. When Gimera kills a butterfly, Buck decides on a payback Predator-style");
+            jsonObj.put(KEY_DESCRIPTION, "Description...");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mMediaInfoList.add(new MediaInfo.Builder(
-                "http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov")
+
+       return new MediaInfo.Builder(getTwitchUrl(name))
                 .setContentType("video/mov")
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setStreamDuration(597 * 1000)
                 .setMediaTracks(null)
                 .setCustomData(jsonObj)
                 .setMetadata(mMediaMetadata)
-                .build());
-
-        MediaMetadata mMediaMetadata2 = new MediaMetadata(MediaMetadata.MEDIA_TYPE_MOVIE);
-        mMediaMetadata2.putString(MediaMetadata.KEY_TITLE, "The Grand Tournament - Trailer");
-        mMediaMetadata2.putString(MediaMetadata.KEY_SUBTITLE, "Blizzard Entertainment");
-        mMediaMetadata2.addImage(new WebImage(Uri.parse("http://i3.ytimg.com/vi/Fe7XDBtlQzg/maxresdefault.jpg")));
-        mMediaMetadata2.addImage(new WebImage(Uri.parse("http://o.aolcdn.com/hss/storage/midas/3a173481f7edb75a623fca98ef6ea459/202356682/hearthstone.jpg")));
-        JSONObject jsonObj2 = null;
-        try {
-            jsonObj2 = new JSONObject();
-            jsonObj2.put(KEY_DESCRIPTION, "Mount up and make your way to the most fun festival in all of Hearthstone! Champions, noble steeds, pirates, and more await you in Hearthstone’s second expansion: The Grand Tournament!");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mMediaInfoList.add(new MediaInfo.Builder(
-                "http://srv60.clipconverter.cc/download/uZbYn4Gp4n%2BwZHBxl5qWanFi5KWmqW9o4pSXa3Bom2tpY2q0qc%2FMqHyf1qiZpa2d2A%3D%3D/The%20Grand%20Tournament%20Trailer.mp4")
-                .setContentType("video/mp4")
-                .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
-                .setStreamDuration(53 * 1000)
-                .setMediaTracks(null)
-                .setCustomData(jsonObj2)
-                .setMetadata(mMediaMetadata2)
-                .build());
-
-        return mMediaInfoList;
+                .build();
     }
 
+    private static String getTwitchUrl(String streamerName){
+        String response = new String();
+        try {
+            URL twitch_token = new URL(
+                    new String("https://api.twitch.tv/api/channels/"
+                            + streamerName +
+                            "/access_token"));
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(twitch_token.openConnection().getInputStream()));
+
+            String stringBuffer;
+            String stringText = "";
+            while ((stringBuffer = reader.readLine()) != null) {
+                stringText += stringBuffer;
+            }
+
+            reader.close();
+
+            String new_url = "http://usher.twitch.tv/api/channel/hls/" + streamerName + ".m3u8?";
+
+            try {
+                JSONObject jsonObject = new JSONObject(stringText);
+
+                String sig = jsonObject.getString("sig");
+                String token = jsonObject.getString("token").replace("\\", "");
+
+                new_url += "player=twitchweb"
+                        + "&sig=" + URLEncoder.encode(sig, "UTF-8")
+                        + "&token=" + URLEncoder.encode(token,"UTF-8")
+                        + "&allow_audio_only=true"
+                        + "&allow_source=true"
+                        + "&type=any"
+                        + "&p=6";
+
+            } catch (JSONException e) {
+
+            }
+
+            URL twitch_stream = new URL(new_url);
+
+            Log.d(TAG,new_url);
+
+            BufferedReader reader2 = new BufferedReader(new InputStreamReader(twitch_stream.openConnection().getInputStream()));
+
+            stringText = "";
+            while ((stringBuffer = reader2.readLine()) != null) {
+                stringText += stringBuffer;
+            }
+
+            reader2.close();
+
+            //response = stringText.split("#EXT-X-MEDIA")[4].split(",")[9].split("\"")[2];
+            //response = "http://devimages.apple.com/iphone/samples/bipbop/bipbopall.m3u8";
+            response = stringText.split("#EXT-X-MEDIA")[4].split("\"low\"")[2];
+
+        } catch (MalformedInputException e) {
+            response = e.toString();
+        } catch (IOException e) {
+            response = e.toString();
+        }
+        return response;
+    }
 }

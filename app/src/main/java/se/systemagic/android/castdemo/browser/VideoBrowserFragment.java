@@ -62,7 +62,6 @@ public class VideoBrowserFragment extends Fragment implements VideoListAdapter.I
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(layoutManager);
         mAdapter = new VideoListAdapter(this);
-        mAdapter.setData(VideoProvider.fake_load_data());
         mRecyclerView.setAdapter(mAdapter);
         getLoaderManager().initLoader(0, null, this);
         mCastManager = VideoCastManager.getInstance();

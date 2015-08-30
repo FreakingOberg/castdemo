@@ -20,7 +20,7 @@ public class VideoItemLoader extends AsyncTaskLoader<List<MediaInfo>> {
 
     @Override
     public List<MediaInfo> loadInBackground() {
-        return VideoProvider.fake_load_data();
+        return VideoProvider.load_data();
     }
 
     @Override
