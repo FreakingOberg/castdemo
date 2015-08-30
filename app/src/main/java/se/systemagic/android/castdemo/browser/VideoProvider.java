@@ -44,7 +44,7 @@ public final class VideoProvider {
             e.printStackTrace();
         }
         mMediaInfoList.add(new MediaInfo.Builder(
-                "http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov")
+                "http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov")
                 .setContentType("video/mov")
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setStreamDuration(597 * 1000)

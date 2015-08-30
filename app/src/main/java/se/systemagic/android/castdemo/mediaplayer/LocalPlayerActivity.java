@@ -396,6 +396,7 @@ public class LocalPlayerActivity extends AppCompatActivity {
             case IDLE:
                 switch (mLocation) {
                     case LOCAL:
+                        Log.d(TAG,"IDLE and LOCAL");
                         mVideoView.setVideoURI(Uri.parse(mSelectedMedia.getContentId()));
                         mVideoView.seekTo(0);
                         mVideoView.start();
@@ -404,9 +405,13 @@ public class LocalPlayerActivity extends AppCompatActivity {
                         updatePlaybackLocation(PlaybackLocation.LOCAL);
                         break;
                     case REMOTE:
+                        Log.d(TAG,"IDLE and REMOTE");
                         try {
                             mCastManager.checkConnectivity();
+                            loadRemoteMedia(mSeekbar.getProgress(), true);
+                            mPlaybackState = PlaybackState.PLAYING;
                             //Utils.showQueuePopup(this, mPlayCircle, mSelectedMedia);
+
                         } catch (Exception e) {
                             Utils.handleException(LocalPlayerActivity.this, e);
                             return;
