@@ -9,12 +9,9 @@ package se.systemagic.android.castdemo.browser;
 
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.MediaTrack;
 import com.google.android.gms.common.images.WebImage;
 
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -61,7 +58,7 @@ public final class VideoProvider {
             e.printStackTrace();
         }
 
-       return new MediaInfo.Builder(getTwitchUrl(name))
+       return new MediaInfo.Builder("http://qthttp.apple.com.edgesuite.net/1010qwoeiuryfg/sl.m3u8")
                 .setContentType("video/mov")
                 .setStreamType(MediaInfo.STREAM_TYPE_BUFFERED)
                 .setStreamDuration(597 * 1000)

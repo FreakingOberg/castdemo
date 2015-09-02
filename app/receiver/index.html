@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cast Demo Twitch</title>
+	<style type="text/css">
+	  body {
+	    overflow:hidden;
+	  }
+      div{
+	    height:720PX;
+	    width:1280PX;
+	    text-align:center;
+	    border:0px solid silver;
+	    display: table-cell;
+	    vertical-align:middle;
+	    color:#FFFFFF;
+	    background-color:#6441A5;
+	    font-weight:bold;
+	    font-family:Verdana, Geneva, sans-serif;
+	    font-size:40px;
+	}
+    </style>
+  </head>
+<body>
+<div id="message">Cast Demo Twitch</div>
+<video id='vid'></video>
+<script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js"> </script>
+<script type="text/javascript" src="//www.gstatic.com/cast/sdk/libs/mediaplayer/1.0.0/media_player.js"> </script>
+<script type="text/javascript">
+// If you set ?Debug=true in the URL, such as a different App ID in the
+// developer console, include debugging information.
+if (window.location.href.indexOf('Debug=true') != -1) {
+  cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+  cast.player.api.setLoggerLevel(cast.player.api.LoggerLevel.DEBUG);
+}
+
+var mediaElement = document.getElementById('vid');
+
+// Create the media manager. This will handle all media messages by default.
+window.mediaManager = new cast.receiver.MediaManager(mediaElement);
+
+// Remember the default value for the Receiver onLoad, so this sample can Play
+// non-adaptive media as well.
+window.defaultOnLoad = mediaManager.onLoad;
+mediaManager.onLoad = function (event) {
+// The Media Player Library requires that you call player unload between
+// different invocations.
+
+
+
+
+  if (window.player !== null) {
+    player.unload();    // Must unload before starting again.
+    window.player = null;
+  }
+
+  if (event.data['media'] && event.data['media']['contentId']) {
+    console.log('Starting media application');
+    var url = event.data['media']['contentId'];
+// Create the Host - much of your interaction with the library uses the Host and
+// methods you provide to it.
+    window.host = new cast.player.api.Host(
+      {'mediaElement':mediaElement, 'url':url});
+    var initStart = event.data['media']['currentTime'] || 0;
+    var autoplay = event.data['autoplay'] || true;
+    protocol = cast.player.api.CreateHlsStreamingProtocol(host);
+  
+// How to override a method in Host. I know that it's safe to just provide this
+// method.
+    host.onError = function(errorCode) {
+      console.log("Fatal Error - " + errorCode);
+      if (window.player) {
+        window.player.unload();
+        window.player = null;
+      }
+    };
+// If you need cookies, then set withCredentials = true also set any header
+// information you need.  If you don't need them, there can be some unexpected
+// effects by setting this value.
+      host.updateSegmentRequestInfo = function(requestInfo) {
+        requestInfo.withCredentials = true;
+      };
+    console.log("Starting Media Player Library");
+    window.player = new cast.player.api.Player(host);
+    window.player.load(protocol, initStart);
+    
+  }
+}
+
+window.player = null;
+console.log('Application is ready, starting system');
+window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+castReceiverManager.start();
+
+window.castReceiverManager.onSenderDisconnected = function(event) {
+if(window.castReceiverManager.getSenders().length == 0 &&
+  event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
+  window.close();
+ }
+}
+
+</script>
+</body>
+</html>

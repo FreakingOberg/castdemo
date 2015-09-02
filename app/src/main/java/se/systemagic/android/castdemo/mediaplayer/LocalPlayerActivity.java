@@ -584,6 +584,7 @@ public class LocalPlayerActivity extends AppCompatActivity {
 
     private void loadRemoteMedia(int position, boolean autoPlay) {
         mCastManager.startVideoCastControllerActivity(this, mSelectedMedia, position, autoPlay);
+        //mCastManager.loadMedia();
     }
 
     private void setCoverArtStatus(String url) {
